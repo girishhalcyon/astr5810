@@ -1,0 +1,17 @@
+# name = name of planet
+# star_teff = effective temperature of star [K]
+# star_radius = radius of star [solar radii]
+# planet_a = semimajor axis of planet's orbit [AU]
+# planet_radius = radius of planet [Earth radii]
+# planet_albedo = Bond albedo of the planet
+
+   name | star_teff | star_radius | planet_a | planet_radius | planet_albedo
+Mercury |      5780 |         1.0 |   0.3871 |        0.3825 |         0.119
+  Venus |      5780 |         1.0 |   0.7233 |        0.9488 |          0.75
+  Earth |      5780 |         1.0 |      1.0 |        0.9989 |         0.306
+   Mars |      5780 |         1.0 |   1.5236 |        0.5315 |          0.25
+Jupiter |      5780 |         1.0 |   5.2044 |        10.961 |         0.343
+ Saturn |      5780 |         1.0 |    9.579 |        9.1299 |         0.342
+ Uranus |      5780 |         1.0 |  19.2012 |        3.9764 |           0.3
+Neptune |      5780 |         1.0 |  30.0476 |        4.1743 |          0.29
+  Pluto |      5780 |         1.0 |  39.4792 |        0.1874 |           0.5
