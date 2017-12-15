@@ -15,7 +15,7 @@
 %  If you want to define shortcuts for commonly-typed commands you'll
 %  use, you can do so here - for example, here is a command to make it
 %  easier to refer to H alpha emission (using 'math mode', denoted by
-%  the dollar signs, to generate the Greek letter alpha). 
+%  the dollar signs, to generate the Greek letter alpha).
 
 \begin{document}
 
@@ -33,9 +33,9 @@
 The TRAPPIST-1 system consists of at least seven small roughly Earth-sized planets orbiting an ultracool M-dwarf star. Of these seven, three lie within the star's roughly defined Goldilocks zone for liquid surface water. These planets are prime candidates for further study with transmission spectroscopy with \emph{JWST}, and so \cite{Morley2017} presented model emission spectra for planets in this system for a variety of assumed surface pressures, compositions, and albedos. When the system's discovery was announced, I wondered what it would be like if sapient civilizations emerged on two neighbor planets. How would they see each other and at what point might one definitively recognize the other as alien life? This project answers a much simpler version of those questions: given the emission spectra of TRAPPIST-1 f and g, how would TRAPPIST-1 f observe TRAPPIST-1 g?
 
 \section{Emission Spectra}
-For TRAPPIST-1 f (the observer planet, where ``we" are standing), I use the model that assumes an Earth-like atmospheric composition, has a bond albedo $A_B = 0.3$, and surface pressure $P_\mathrm{surf} = 1$ bar. For TRAPPIST-1 g (our target planet), I selected the model with a Titan-like atmospheric composition, $A_B = 0$, and $P_\mathrm{surf} = 0.001$ bar. Since the albedo is set to 0, we can neglect any reflectance from the host star and do not need to consider TRAPPIST-1's spectrum for this simulation. 
+For TRAPPIST-1 f (the observer planet, where ``we" are standing), I use the model that assumes an Earth-like atmospheric composition, has a bond albedo $A_B = 0.3$, and surface pressure $P_\mathrm{surf} = 1$ bar. For TRAPPIST-1 g (our target planet), I selected the model with a Titan-like atmospheric composition, $A_B = 0$, and $P_\mathrm{surf} = 0.001$ bar. Since the albedo is set to 0, we can neglect any reflectance from the host star and do not need to consider TRAPPIST-1's spectrum for this simulation.
 
-The emission spectrum models show the flux emitted from the top of the atmosphere of their respective planet both of which are shown in Figure \ref{figure:emission_spectra}. An algebraic expression for this flux is given by 
+The emission spectrum models show the flux emitted from the top of the atmosphere of their respective planet both of which are shown in Figure \ref{figure:emission_spectra}. An algebraic expression for this flux is given by
 \begin{equation}
 F_\lambda = \left(B_{\lambda}(T_\mathrm{surf})e^{-\tau_\lambda} + \int_{0}^{\tau_\lambda} B_\lambda (T_{\tau_{\lambda}'})e^{-\tau_{\lambda}'}d\tau_{\lambda}' \right)\times 2\pi\left(1 - \cos{\theta}\right)
 \label{equation:f_lambda}
@@ -74,12 +74,12 @@ Then we use a Taylor expansion to make the integral term analytical and use the 
 \section{Signal-to-Noise Ratio Derivation}
 The model provided must be consistent with the spectrograph we observe with, so we convolve it with a Gaussian kernel to match the resolution we assume, and then multiply by the throughput of the telescope ($f$, letting through anywhere between 0\% and 100\% of the light). The flux we observe from our target is this convolved emission spectrum of TRAPPIST-1 g modified by the angular size of the target, the collecting area of our telescope ($A$), and the exposure time ($t$):
 \begin{equation}
-\mathrm{Signal} = \left(F_\lambda * G(R\times \lambda_\mathrm{mean})\right) \times \frac{\pi R_p^2}{4\pi d^2} \times A \times t \times f
+\mathrm{Signal} = \left(F_\lambda * G(\frac{\lambda_\mathrm{mean}}{R})\right) \times \frac{\pi R_p^2}{4\pi d^2} \times A \times t \times f \times\frac{\lambda}{hc}
 \end{equation} where $R_p$ is the radius of TRAPPIST-1 g and $d$ is the distance between TRAPPIST-1 f and g, which we assume is simply the difference between their orbital distances (TRAPPIST-1 g is at perfect opposition to us and both planets are on perfectly circular orbits).
 
 The noise is a combination of the Poisson noise of our signal, the Poisson noise of the flux from our own atmosphere which we circuitously (and only approximately) solved for above, and white noise due to instrumental limitations ($\sigma^2$):
 \begin{equation}
- \mathrm{Noise} = \sqrt{\mathrm{Signal} + \left(\int_{0}^{\tau_{\lambda}} B_{\lambda} (T_{\tau_{\lambda}'})e^{-\tau_{\lambda}'}d\tau_{\lambda}' \times f \times A \times t\times 2\pi\left(1 - \cos{\theta}\right)\right) + \sigma^2}   
+ \mathrm{Noise} = \sqrt{\mathrm{Signal} + \left(\int_{0}^{\tau_{\lambda}} B_{\lambda} (T_{\tau_{\lambda}'})e^{-\tau_{\lambda}'}d\tau_{\lambda}' \times f \times A \times t\times 2\pi\left(1 - \cos{\theta}\right)\right)\times\frac{\lambda}{hc} + \sigma^2}
 \end{equation}
 
 Then the SNR is simply:
@@ -87,8 +87,11 @@ Then the SNR is simply:
     \mathrm{SNR} = \frac{\mathrm{Signal}}{\mathrm{Noise}}
 \end{equation}
 
-For the purposes of our simulation, the parameters we can vary are $R, f, t, A, \text{ and }\sigma^2$. Of these, $A$ we vary by changing the diameter of the telescope, and use $\log{\sigma^2}$ and $\log{R}$ instead of the values directly. For a wavelength range between $\lambda_\mathrm{min}$ and $\lambda_\mathrm{max}$ we can show the SNR as a function of wavelength and the true SNR is a mean over this function. In the project notebook, we allow these parameters to be varied and show the mean SNR integrated over the range specified using an interactive widget. A few example outputs from the widget are shown in Figure \ref{figure:widget_all} along with an explanation of the slider parameters in Figure \ref{figure:widget_slider}.
-
+For the purposes of our simulation, the parameters we can vary are $R, f, t, A, \text{ and }\sigma^2$. Of these, $A$ we vary by changing the diameter of the telescope, and use $\log{\sigma^2}$ and $\log{R}$ instead of the values directly. For a wavelength range between $\lambda_\mathrm{min}$ and $\lambda_\mathrm{max}$ we can show the SNR as a function of wavelength and the true SNR is a mean over this function. In the project notebook, we allow these parameters to be varied and show the mean SNR integrated over the range specified using an interactive widget. A few example outputs from (an old version of) the widget are shown in Figure \ref{figure:widget_all} along with an explanation of the slider parameters in Figure \ref{figure:widget_slider}.
+Looking at outputs from the most recent version of the widget
+(moving from flux units to photons correctly), a very simple spectrograph
+with high $\sigma^2 \sim 10^{35}$ photons can still detect absorption
+features with high SNR.
 \begin{figure}
     \centering
         \begin{minipage}{.33\textwidth}
@@ -103,7 +106,14 @@ For the purposes of our simulation, the parameters we can vary are $R, f, t, A, 
         \centering
         \includegraphics[width=1.0\linewidth]{widget_3.png}
     \end{minipage}
-    \caption{For each figure, the top subplot shows SNR at each $\lambda$ and the bottom shows the signal received in blue with a red band indicating the range of noise (normalized by the maximum signal).}
+    \caption{For each figure, the top subplot shows SNR at each $\lambda$,
+    and the bottom shows the signal received in blue with a red band indicating
+    the range of noise (normalized by the maximum signal).
+    The notebook has an updated form of this figure where a third plot is
+    added below to represent the expected flux with injected noise
+    corresponding to the calculated SNR (this noise is injected as a Gaussian
+    with the variance determined by the SNR which is not strictly
+    mathematically valid).}
     \label{figure:widget_all}
 \end{figure}
 
@@ -117,7 +127,7 @@ For the purposes of our simulation, the parameters we can vary are $R, f, t, A, 
 
 \begin{thebibliography}{}
 
-\bibitem[Morley et al.(2017)]{Morley2017} Morley, C.~V., Kreidberg, L., Rustamkulov, Z., Robinson, T., \& Fortney, J.~J.\ 2017, \apj, 850, 121 
+\bibitem[Morley et al.(2017)]{Morley2017} Morley, C.~V., Kreidberg, L., Rustamkulov, Z., Robinson, T., \& Fortney, J.~J.\ 2017, \apj, 850, 121
 
 \end{thebibliography}
 
